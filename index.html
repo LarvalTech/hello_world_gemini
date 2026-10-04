@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--
+  Hello World page
+  Author: Fiona Delaney
+  Created with: Gemini Flash 3.6 (Google)
+  Date: 2026-10-03
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hello World</title>
+  <style>
+    body { margin: 0; min-height: 100vh; background: #0f172a; color: #fff; font-family: system-ui, sans-serif; overflow: hidden; transition: background 0.5s ease; }
+    h1 { position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%); margin: 0; font-size: clamp(2.5rem, 6vw, 4.5rem); text-shadow: 0 10px 20px rgba(0,0,0,0.4); white-space: nowrap; user-select: none; }
+    .controls { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; gap: 1rem; z-index: 10; }
+    button { padding: 0.8rem 1.8rem; font-size: 1rem; font-weight: 600; color: #fff; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 1 border: 1px solid rgba(255,255,255,0.3); border-radius: 50px; cursor: pointer; transition: all 0.2s; box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+    button:hover { background: rgba(255,255,255,0.3); transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+  <h1 id="title">Hello World!</h1>
+  <div class="controls">
+    <button onclick="changeBg()">🎨 Change Background</button>
+    <button id="bounceBtn" onclick="toggleBounce()">🚀 Bounce Text</button>
+  </div>
+  <script>
+    const title = document.getElementById('title');
+    let x = window.innerWidth / 2 - 100, y = window.innerHeight / 2 - 30, dx = 3, dy = 3, bouncing = false, animId;
+    
+    function changeBg() {
+      const hue1 = Math.floor(Math.random() * 360), hue2 = (hue1 + 40) % 360;
+      document.body.style.background = `linear-gradient(135deg, hsl(${hue1}, 70%, 20%), hsl(${hue2}, 70%, 10%))`;
+    }
+
+    function toggleBounce() {
+      bouncing = !bouncing;
+      document.getElementById('bounceBtn').textContent = bouncing ? "⏸️ Pause Bounce" : "🚀 Bounce Text";
+      if (bouncing) { title.style.transform = 'none'; move(); } else { cancelAnimationFrame(animId); }
+    }
+
+    function move() {
+      if (!bouncing) return;
+      const rect = title.getBoundingClientRect();
+      if (x + rect.width >= window.innerWidth || x <= 0) dx *= -1;
+      if (y + rect.height >= window.innerHeight || y <= 0) dy *= -1;
+      x += dx; y += dy;
+      title.style.left = x + 'px'; title.style.top = y + 'px';
+      animId = requestAnimationFrame(move);
+    }
+  </script>
+</body>
+</html>
